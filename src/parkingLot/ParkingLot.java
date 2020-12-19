@@ -10,11 +10,10 @@ public class ParkingLot {
     }
     
     public boolean park() {
-        if (this.isFull()) {
-            return false;
+        if (!this.isFull()) {
+            this.occupiedSpaces += 1;
         }
-        this.occupiedSpaces += 1;
-        return true;
+        return this.isFull();
     }
     
     public boolean isFull() {
