@@ -2,13 +2,18 @@ package parkingLot;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class AssistantTest {
     @Test
-    public void shouldAssignTheGivenParkingLotToTheAssistant() {
-        Assistant assistant = new Assistant();
-        ParkingLot parkingLot = new ParkingLot(1,assistant);
-        assertTrue(assistant.assign(parkingLot));
+    public void shouldUpdateDisplayWhenGetNotification() {
+        Display display = mock(Display.class);
+        Assistant assistant = new Assistant(display);
+        ParkingLot parkingLot = new ParkingLot(3);
+
+        assistant.informFull(parkingLot);
+
+        verify(display).update(parkingLot, ParkingStatus.FILLED);
     }
 }

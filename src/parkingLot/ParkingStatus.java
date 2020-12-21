@@ -1,6 +1,6 @@
 package parkingLot;
 
-public enum SlotStatus {
+public enum ParkingStatus {
     FILLED,
     EMPTY
 }

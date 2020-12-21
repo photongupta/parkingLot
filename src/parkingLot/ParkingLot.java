@@ -1,29 +1,35 @@
 package parkingLot;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class ParkingLot {
-    private final SlotStatus[] slots;
-    private final Assistant assistant;
-    
-    public ParkingLot(int capacity, Assistant assistant) {
-        this.slots = new SlotStatus[capacity];
+    private final ArrayList<ParkingStatus> slots;
+    private final int capacity;
+    private Assistant assistant;
+
+    public ParkingLot(int capacity) {
+        this.slots = new ArrayList<>(capacity);
+        this.capacity = capacity;
+    }
+
+    public void assign(Assistant assistant) {
         this.assistant = assistant;
-        Arrays.fill(slots, SlotStatus.EMPTY);
     }
-    
+
     public boolean park() {
-        for (int slotNo = 0; slotNo < this.slots.length; slotNo++) {
-            if (this.isEmptySlot(slotNo)) {
-                this.slots[slotNo] = SlotStatus.FILLED;
-                return true;
-            }
+        boolean isParked = false;
+        if (!this.isFull()) {
+            this.slots.add(ParkingStatus.FILLED);
+            isParked = true;
         }
-        this.assistant.receiveNotification();
-        return false;
+        if (this.isFull() && this.assistant != null) {
+            this.assistant.informFull(this);
+        }
+        return isParked;
     }
-    
-    private boolean isEmptySlot(int slotNo) {
-        return this.slots[slotNo] == SlotStatus.EMPTY;
+
+    private boolean isFull() {
+        return this.slots.size() == this.capacity;
     }
+
 }
