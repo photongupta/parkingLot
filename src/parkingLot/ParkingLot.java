@@ -1,42 +1,39 @@
 package parkingLot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ParkingLot {
-    private final ArrayList<ParkingStatus> slots;
+    private int availableSlots;
     private final int capacity;
-    private final HashMap<ParkingLotListener, Integer> listeners;
+    private final HashMap<ParkingLotListener, Integer> listeners = new HashMap<>();
 
     public ParkingLot(int capacity) {
-        this.slots = new ArrayList<>(capacity);
-        this.listeners = new HashMap<>();
+        this.availableSlots = 0;
         this.capacity = capacity;
     }
 
-    public void assignListener(ParkingLotListener listener, int informOn) {
-        this.listeners.put(listener, informOn);
+    public void assignListener(ParkingLotListener listener, int threshold) {
+        this.listeners.put(listener, threshold);
     }
 
     public boolean park() {
         if (this.isFull()) return false;
 
-        this.slots.add(ParkingStatus.FILLED);
+        this.availableSlots++;
         this.informListeners();
         return true;
     }
 
     private void informListeners() {
-        ParkingLot parkingLot = this;
-        this.listeners.forEach((listener, occupiedPercent) -> {
-            if (this.isOccupiedBy(occupiedPercent)) {
-                listener.notify(parkingLot);
+        this.listeners.forEach((listener, threshold) -> {
+            if (this.isOccupiedBy(threshold)) {
+                listener.notify(this);
             }
         });
     }
 
-    private boolean isOccupiedBy(int percent) {
-        return this.slots.size() * 100 / this.capacity == percent;
+    private boolean isOccupiedBy(int threshold) {
+        return this.availableSlots * 100 / this.capacity == threshold;
     }
 
     private boolean isFull() {
