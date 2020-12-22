@@ -12,7 +12,7 @@ public class AssistantTest {
         Assistant assistant = new Assistant(display);
         ParkingLot parkingLot = new ParkingLot(3);
 
-        assistant.informFull(parkingLot);
+        assistant.notify(parkingLot);
 
         verify(display).update(parkingLot, ParkingStatus.FILLED);
     }

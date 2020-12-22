@@ -1,6 +1,6 @@
 package parkingLot;
 
-public class Assistant {
+public class Assistant implements ParkingLotListener {
 
     private final Display display;
 
@@ -8,7 +8,8 @@ public class Assistant {
         this.display = display;
     }
 
-    public void informFull(ParkingLot parkingLot) {
+    @Override
+    public void notify(ParkingLot parkingLot) {
         this.display.update(parkingLot, ParkingStatus.FILLED);
     }
 }
