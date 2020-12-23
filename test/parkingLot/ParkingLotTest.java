@@ -55,6 +55,27 @@ public class ParkingLotTest {
         verify(manager).notify(parkingLot);
     }
 
+    @Test
+    public void shouldNotifyToAttendantWhenParkIs20PercentFull() {
+        ParkingLot parkingLot = new ParkingLot(5);
+        ParkingLotListener attendant = mock(ParkingLotListener.class);
+        parkingLot.assignListener(attendant, 0, 20);
+
+        assertTrue(parkingLot.park());
+
+        verify(attendant).notify(parkingLot);
+    }
+
+    @Test
+    public void shouldNotifyToAttendantWhenParkIsAtMost20PercentFull() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        ParkingLotListener attendant = mock(ParkingLotListener.class);
+        parkingLot.assignListener(attendant, 0, 20);
+
+        assertTrue(parkingLot.park());
+
+        verify(attendant).notify(parkingLot);
+    }
 }
 
 
